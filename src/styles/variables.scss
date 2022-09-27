@@ -1,0 +1,24 @@
+$tablet: 577px;
+
+$primary: #01695b;
+$brand-secondary-color: #e7f4f2;
+
+$sidebar-width: 11.813rem;
+
+$navbar-height: 3.7rem;
+$navbar-background-color: white;
+$navbar-item-hover-background-color: #c8dce2;
+$navbar-dropdown-item-hover-background-color: #c8dce2;
+$navbar-dropdown-item-active-background-color: #c8dce2;
+$navbar-item-hover-color: #444;
+$navbar-dropdown-item-hover-color: #444;
+$navbar-dropdown-item-active-color: #444;
+
+$main-div-margin: 0.825rem;
+$main-div-height: calc(100vh - #{$navbar-height} - (2 *#{$main-div-margin}));
+$main-div-width: calc(100vw - #{$sidebar-width} - 1.5px - (2 *#{$main-div-margin}));
+
+$tab-content-height: calc(#{$main-div-height} - 61px - 55px - 20px);
+
+$dark-gray-text: #202726;
+$light-gray-text: #6d7070;

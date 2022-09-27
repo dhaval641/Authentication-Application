@@ -1,0 +1,14 @@
+@import "./variables.scss";
+@import "./fonts.scss";
+@import "./navbar";
+@import "./login.scss";
+@import "./profile.scss";
+@import "./popup.scss";
+
+html {
+  overflow-y:hidden;
+}
+body {
+  background-color: whitesmoke;
+  margin: 0;
+}

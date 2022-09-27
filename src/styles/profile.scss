@@ -1,0 +1,115 @@
+.nav-container {
+    position: sticky;
+    top: 0;
+    height: 5rem;
+    width: 100vw;
+}
+.profilePage {
+    overflow-x: hidden;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: whitesmoke;
+    font-weight: 500;
+    flex-direction: column;
+    font-family: monospace;
+}
+.profile-container {
+    margin-top: 5rem;
+    width: 100%;
+    height: calc((90vh - 5rem));
+    display: flex;
+    justify-content: center;
+}
+.image-data-container {
+    width: fit-content;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    border: 1px transparent;
+    box-shadow: 0 0 6px 0 lightgray;
+    background-color: white;
+}
+.image-container {
+    width: 100%;
+    height: 70%;
+    margin-bottom: 1rem;
+    img {
+        height: 100%;
+        width: 100%;
+    }
+}
+.data-container {
+    width: 30%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    box-shadow: 0 0 6px 0 lightgray;
+    background-color: white;
+}
+
+.bio-list {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bio-tag {
+    margin-top: 1.25rem;
+    align-self: flex-start !important;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.upload-image {
+    margin: 1rem;
+}
+.upload-fullname {
+    margin: 1rem;
+    border-radius: 3px;
+}
+.upload-firstname {
+    margin: 1rem;
+    border-radius: 3px;
+}
+.upload-lastname {
+    margin: 1rem;
+    border-radius: 3px;
+}
+.upload-email {
+    margin: 1rem;
+    border-radius: 3px;
+}
+.upload-phone {
+    margin: 1rem;
+    border-radius: 3px;
+}
+.upload-bio {
+    height: 100%;
+    width: 100%;
+    margin: 1rem;
+    resize: none;
+    border-radius: 3px;
+}
+
+.update-list{
+    >* {
+        margin-left: 1rem;
+    }
+}
+.bio {
+    height: 70%;
+    width: 70%;
+    border-radius: 3px;
+}

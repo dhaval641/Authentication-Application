@@ -1,0 +1,78 @@
+.popup-modal {
+    display: flex;
+    transform: translate(200%, 100%);
+    min-height: 15rem;
+    width: 18rem;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    background-color: lightslategrey;
+    font-family: monospace;
+    box-shadow: 0 0 6px 2px darkgray;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+    width: 100%;
+    input {
+        margin: 0.5rem;
+        border: 1px transparent;
+        border-radius: 3px;
+    }
+}
+
+.modal-close-button {
+    margin-right: 0.5rem;
+    background-color: lightblue;
+    border: 1px lightblue;
+    border-radius: 3px;
+    width: max-content;
+    position: absolute;
+    top: 0.5rem;
+    left: 16.5rem;
+    &:hover {
+        background-color: lightcyan;
+    }
+}
+.modal-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    width: 100%;
+    h2 {
+        margin-left: 4rem;
+        text-align: center;
+    }
+
+}
+
+.error {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    white-space: wrap;
+    width: 90%;
+    text-align: center;
+    color: red;
+}
+
+.modal-button {
+    background-color: lightblue;
+    border: 1px lightblue;
+    border-radius: 3px;
+    width: max-content;
+    margin-top: 0.5rem;
+    &:hover {
+        background-color: lightcyan;
+    }
+}
