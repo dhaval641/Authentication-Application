@@ -1,59 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import authenapp from '../images/authenapp.png';
+import { ref, getDatabase, set } from "firebase/database";
+import { updateProfile, getAuth } from "firebase/auth";
 
 export const Signup = () => {
-const [signupSuccess, setSignup] = useState(false);
+  const [clickSignIn, setSignIn] = useState(false);
+  const { signUp } = useUserAuth();
+  const defaultPicture = "https://picsum.photos/200/300";
 
-async function onSubmit(e) {
-    e.preventDefault();
-    const pass = (new FormData(e.target).get("pass"));
-    const cpass = (new FormData(e.target).get("cpass"));
-    const firstname = (new FormData(e.target).get("fname"));
-    const lastname = (new FormData(e.target).get("lname"));
-    const email = (new FormData(e.target).get("email"));
-    // When a post request is sent to the create url, we'll add a new record to the database.
-    const newPerson = { 
-        firstname: {firstname},
-        lastname: {lastname},
-        email: {email},
-        password: {pass},
-    };
-    await fetch("https://data.mongodb-api.com/app/data-xczai/endpoint/data/v1/action/insertOne", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': 'SgP1lxErQIxCdemwypEKVNGQ5PjoMZnOu6PezcGwQ03harLqd5wd93C2HiHgTuf4',
-      },
-      body: {
-        "dataSource": "AuthenticationApp",
-      "database": "AuthenApp",
-      "collection": "UserData",
-      "document": {
-        "name": "John Sample",
-        "age": 42
-      }
-      }
-    })
-    .catch(error => {
-      window.alert(error);
-      return;
+  function writeNewPost(uid, username, email, picture) {
+    const db = getDatabase();   
+  
+    return set(ref(db, "User/"+uid), {
+      UserName: username,
+      email: email,
+      bio: null,
+      phoneNumber: null,
+      ProfilePicture: picture,
     });
-    return (<Redirect to="/profile" />);
   }
 
-const onSignup = (event) => {
+  const onRegister = async (event) => {
     event.preventDefault();
-    const pass = (new FormData(event.target).get("pass"));
-    const cpass = (new FormData(event.target).get("cpass"));
-    if(cpass == pass) {
-        setSignup(true);
+    const userName = (new FormData(event.target).get("userName")); 
+    console.log(userName);
+    try {
+      await signUp(email, password).then(() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        updateProfile(user, {
+          displayName: userName
+        }).then(() => {
+          writeNewPost(user.uid, user.displayName, user.email, defaultPicture)
+          return <Redirect to="/profile" />
+        }).catch((error) => {
+          console.log(error);
+        });
+
+      });
+    } catch (err) {
+      console.log("Error");
     }
-}
-if(signupSuccess){
-    console.log("Password Matches");
-    return <Redirect to="/profile" />
-}
+  };
+
+  if(clickSignIn){
+    return <Redirect to="/login" />
+  }
+
+  const onSignIn = () => {
+    console.log("function called");
+    setSignIn(true);
+  }
+
 return (
     <section id="login" className={`columns loginPage`}>
     <div>
@@ -67,7 +66,7 @@ return (
         <article
         className={`card column is-one-third has-text-centered loginForm`}
         >
-        <form className="loginForm" onSubmit={onSubmit}>
+        <form className="loginForm" onSubmit={onRegister}>
             <fieldset className="login-label-container mb-5">
             <label className="login-label has-text-weight-bold has-text-black is-block mb-4">
                 Create Account
@@ -75,67 +74,74 @@ return (
             </fieldset>
             <div className="field name-field">
             <p className="input-container control fname">
-                <input
+              <input
                 className="input name-input"
                 type="text"
                 name="fname"
                 placeholder="First Name"
                 required
-                />
+              />
             </p>
             <p className="input-container control lname">
-                <input
+              <input
                 className="input name-input"
                 type="text"
                 name="lname"
                 placeholder="Last Name"
                 required
-                />
+              />
             </p>
             </div>
             <div className="field email-field">
             <p className="input-container control has-icons-left has-icons-right">
-                <input
+              <input
                 className="input email-input"
                 type="email"
                 name="email"
                 placeholder="Email"
                 autoComplete="email"
                 required
-                />
-                <span className="icon is-small is-left">
+              />
+              <span className="icon is-small is-left">
                 <i className="fas fa-envelope"></i>
-                </span>
+              </span>
             </p>
             </div>
             <div className="field pass-field">
             <p className="input-container control has-icons-left has-icons-right">
-                <input
+              <input
                 className="input email-input"
                 type="password"
                 name="pass"
                 placeholder="Password"
                 required
-                />
+              />
             </p>
             </div>
             <div className="field cpass-field">
             <p className="input-container control has-icons-left has-icons-right">
-                <input
+              <input
                 className="input email-input"
                 type="password"
                 name="cpass"
                 placeholder="Confirm Password"
                 required
-                />
+              />
             </p>
             </div>
             <div className="login-buttons">
             <button
-                type="submit"
-                className="button has-background-primary get-email-button"
+              type="submit"
+              className="button has-background-primary get-email-button"
             >
-                Sign Up
+              Sign Up
+            </button>
+            <button
+              type="button"
+              onClick={onSignIn}
+              className="button has-background-primary get-email-button"
+            >
+              Sign In
             </button>
             </div>
         </form>

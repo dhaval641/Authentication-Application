@@ -1,65 +1,43 @@
 import React, { useState, useEffect } from "react";
 import googlebtn from '../images/googlebtn.png';
 import authenapp from '../images/authenapp.png';
-import { GoogleLogin } from 'react-google-login';
-import { gapi } from 'gapi-script';
 import { Link, Redirect, useLocation } from "react-router-dom";
-import useCredStore from '../stores/useCredStore.js';
+import { useUserAuth } from "../context/UserAuthContext";
+
 
 export const Login = () => {
-  const [clickSignUp, setClick] = useState(false);
-  
-  const [
-    setProfileName, 
-    setProfileFName, 
-    setProfileLName, 
-    setProfileEmail, 
-    setProfileImage, 
-    clientId, 
-    isLogedIn, 
-    setLoginStatus
-  ] = useCredStore((state) => [
-    state.setProfileName,
-    state.setProfileFName,
-    state.setProfileLName,
-    state.setProfileEmail,
-    state.setProfileImage,
-    state.clientId,
-    state.isLogedIn,
-    state.setLoginStatus,
-  ]);
+  const [clickSignUp, setSignUp] = useState(false);
+  const { logIn, googleSignIn } = useUserAuth();
 
-  useEffect(() => {
-    const initClient = () => {
-          gapi.client.init({
-          clientId: clientId,
-          scope: ''
-        });
-      };
-      gapi.load('client:auth2', initClient);
-  });
-  const onSuccess = (response) => {
-    setProfileName(response.profileObj.name);
-    setProfileFName(response.profileObj.givenName);
-    setProfileLName(response.profileObj.familyName);
-    setProfileEmail(response.profileObj.email);
-    setProfileImage(response.profileObj.imageUrl);
-    setLoginStatus(true);
-    console.log("success", response);
-  }
-  const onFailure = () => {
-    console.log("failed");
-  }
-  if(isLogedIn){
-    return <Redirect to="/profile" />
-  }
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await logIn(email, password);
+
+      <Redirect to="/profile" />
+    } catch (err) {
+      console.log("Error");
+    }
+  };
+  const handleGoogleSignIn = async (e) => {
+    e.preventDefault();
+
+    try {
+      await googleSignIn().then(() => {
+        <Redirect to="/profile" />
+      });
+    } catch (err) {
+      console.log("Error");
+    }
+  };
+
   if(clickSignUp){
     return <Redirect to="/signup" />
   }
 
   const onSignUp = () => {
     console.log("function called");
-    setClick(true);
+    setSignUp(true);
   }
 
   return (
@@ -75,27 +53,15 @@ export const Login = () => {
         <article
           className={`card column is-one-third has-text-centered loginForm`}
         >
-          <form className="loginForm">
+          <form className="loginForm" onSubmit={onSubmit}>
             <fieldset className="login-label-container mb-5">
               <label className="login-label has-text-weight-bold has-text-black is-block mb-4">
                 Login To Your Account
               </label>
             </fieldset>
-            <GoogleLogin
-              className="img"
-              clientId={clientId}
-              render={renderProps => (
-                <button className="loginWithGoogle" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                  <img src={googlebtn} alt="" />
-                </button>
-              )}
-              buttonText="Sign in with Google"
-              onSuccess={onSuccess}
-              onFailure={onFailure}
-              jsSrc="https://apis.google.com/js/api.js"
-              cookiePolicy={'single_host_origin'}
-              isSignedIn={isLogedIn}
-            />
+            <button className="loginWithGoogle" onClick={handleGoogleSignIn}>
+              <img src={googlebtn} alt="" />
+            </button>
             <div className="login-divider divider has-text-black is-black">
               OR
             </div>

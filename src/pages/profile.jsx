@@ -42,14 +42,17 @@ export const Profile = () => {
         state.setProfileImage,
         state.isUpdatePassword,
       ]);
+    const [userInfo, updateUserInfo] = useState("");
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const db = getDatabase();
+    useEffect(() => {
+      onValue(ref(db, 'User/'+user.uid), (snapshot) => {
+      updateUserInfo(snapshot.val());
+      });
+    }, [user])
     const onEditFullName = event => {
         setProfileName(event.target.value);
-    }
-    const onEditFirstName = event => {
-        setProfileFName(event.target.value);
-    }
-    const onEditLastName = event => {
-        setProfileLName(event.target.value);
     }
     const onEditEmail = event => {
         setProfileEmail(event.target.value);
@@ -80,25 +83,15 @@ export const Profile = () => {
                 )}
                 {!isEditOn ? (
                     <ListGroup className="list-group-flush">
-                        <ListGroup.Item>Full Name: {ProfileName}</ListGroup.Item>
-                        <ListGroup.Item>First Name: {ProfileFName}</ListGroup.Item>
-                        <ListGroup.Item>Last Name: {ProfileLName}</ListGroup.Item>
-                        <ListGroup.Item>Email: {ProfileEmail}</ListGroup.Item>
-                        <ListGroup.Item>Phone: {ProfilePhone}</ListGroup.Item>
+                        <ListGroup.Item>Full Name: {userInfo.UserName}</ListGroup.Item>
+                        <ListGroup.Item>Email: {userInfo.email}</ListGroup.Item>
+                        <ListGroup.Item>Phone: {userInfo.phoneNumber}</ListGroup.Item>
                     </ListGroup>
                 ) : (
                     <ListGroup className="list-group-flush update-list">
                         <ListGroup.Item>
                             Full Name: 
                             <input className="upload-fullname" type="text" name="full-name" onChange={onEditFullName} />
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            First Name: 
-                            <input type="text" className="upload-firstname" name="first-name" onChange={onEditFirstName} />
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Last Name: 
-                            <input type="text" className="upload-lastname" name="last-name" onChange={onEditLastName} />
                         </ListGroup.Item>
                         <ListGroup.Item>
                             Email: 
@@ -116,7 +109,7 @@ export const Profile = () => {
                     <ListGroup.Item className="bio-tag">Bio: </ListGroup.Item>
                     {!isEditOn ? (
                         <ListGroup.Item>
-                            {ProfileBio}
+                            {userInfo.bio}
                         </ListGroup.Item>
                     ) : (
                         <ListGroup.Item className="bio"> 
